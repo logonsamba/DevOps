@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<p>Use this area to provide additional information.</p>
+<table id="blogTable">
+    <thead >
+        <tr>
+            <th>Sno</th>
+            <th>login</th>
+            <th>id</th>
+            <th>node_id</th>
+            <th>url</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<style type="text/css">
+    table tr>td,th{
+        border:solid 1px #000000;
+    }
+    
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        myfunction();
+    });
+
+    function myfunction() {
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.github.com/users/hadley/orgs',
+            datatype: JSON,
+            //data: {
+            //    'categoryId': $("#CategoryList").val()
+            //},
+            success: function (data) {
+                $('#blogTable tbody').empty();
+                var sr = 0;
+                $.each(data, function (i, item) {
+                    sr++;
+                    var rows = "<tr id=" + item.id + ">"+ "<td>" + sr + "</td>" + "<td>" + item.login + "</td>" + "<td>" + item.id + "</td>" + "<td>" + item.node_id + "</td>" + "<td>" + item.url + "</td>" + "</tr>";
+                    $('#blogTable tbody').append(rows);
+                });
+            },
+            error: function (data) {
+                $('#blogTable tbody').empty();
+                $('#blogTable tbody').append("<tr>Nodata found</tr>");
+            }
+        });
+    }
+</script>
